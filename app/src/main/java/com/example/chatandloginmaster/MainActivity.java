@@ -3,6 +3,9 @@ package com.example.chatandloginmaster;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -56,14 +59,60 @@ public class MainActivity extends AppCompatActivity {
                 mAuth.createUserWithEmailAndPassword(id, pw).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()) { // 회원가입에 성공했다면
+                                if(task.isSuccessful()) {
                                     Log.d(TAG,  "회원 가입에 성공하였습니다. ");
                                     Toast.makeText(MainActivity.this, "회원 가입에  성공하였습니다. ", Toast.LENGTH_SHORT).show();
+
                                     FirebaseUser user = mAuth.getCurrentUser(); // 로그인한 회원의 계정정보 가져오기
                                     //updateUI(user);
                                 } else {
                                     Log.w(TAG, "회원 가입에 실패하였습니다. ", task.getException());
                                     Toast.makeText(MainActivity.this, "회원 가입에 실패하였습니다. ", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
+
+        Button loginBtn = (Button)findViewById(R.id.loginBtn);
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id = idEdt.getText().toString();
+                String pw = pwEdt.getText().toString();
+
+                if(id.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "아이디를 입력하세요. ", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(pw.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "패스워드를 입력하세요. ", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                mAuth.signInWithEmailAndPassword(id, pw)
+                        .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()) {
+                                    Log.d(TAG,  "로그인에 성공하였습니다. ");
+                                    Toast.makeText(MainActivity.this, "로그인에 성공하였습니다. ", Toast.LENGTH_SHORT).show();
+
+                                    FirebaseUser user = mAuth.getCurrentUser(); // 로그인한 회원의 계정 정보 가져오기
+                                    if(user != null) {
+                                        String id = user.getEmail();
+                                        String name = user.getDisplayName();
+                                        Log.d(TAG, "아이디 : " + id + ", 이름 : " + name);
+                                    }
+                                    //updateUI(user);
+
+                                    //Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                                    //startActivity(intent);
+
+                                } else {
+                                    Log.w(TAG, "로그인에 실패하였습니다. ", task.getException());
+                                    Toast.makeText(MainActivity.this, "로그인에 실패하였습니다. ", Toast.LENGTH_SHORT).show();
+                                    //updateUI(user);
                                 }
                             }
                         });
