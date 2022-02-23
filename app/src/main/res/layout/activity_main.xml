@@ -18,7 +18,8 @@
         android:layout_height="wrap_content"
         android:hint="아이디를 입력하세요. "
         android:maxLines="1"
-        android:inputType=""
+        android:ems="10"
+        android:inputType="textEmailAddress"
         android:layout_marginRight="50dp"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="30dp" />
@@ -29,6 +30,9 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="50dp"
         android:layout_marginLeft="50dp"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:ems="10"
         android:hint="패스워드를 입력하세요. " />
 
     <LinearLayout
