@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,11 +29,14 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth; // 파이어베이스 인증 객체
 
     EditText idEdt, pwEdt;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
 
         mAuth = FirebaseAuth.getInstance(); // 파이어베이스 인증 객체를 가져와서 변수에 할당함
 
@@ -89,11 +93,13 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "패스워드를 입력하세요. ", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                progressBar.setVisibility(View.VISIBLE);
 
                 mAuth.signInWithEmailAndPassword(id, pw)
                         .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+                                progressBar.setVisibility(View.GONE);
                                 if(task.isSuccessful()) {
                                     Log.d(TAG,  "로그인에 성공하였습니다. ");
                                     Toast.makeText(MainActivity.this, "로그인에 성공하였습니다. ", Toast.LENGTH_SHORT).show();
@@ -106,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                     //updateUI(user);
 
-                                    //Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
-                                    //startActivity(intent);
+                                    Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                                    startActivity(intent);
 
                                 } else {
                                     Log.w(TAG, "로그인에 실패하였습니다. ", task.getException());
