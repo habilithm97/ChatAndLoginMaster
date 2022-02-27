@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance(); // 파이어베이스 인증 객체를 가져와서 변수에 할당함
 
         idEdt = (EditText)findViewById(R.id.idEdt);
         pwEdt = (EditText)findViewById(R.id.pwEdt);
@@ -55,13 +55,13 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                // 신규 회원가입
+                // 신규 회원  가입
                 mAuth.createUserWithEmailAndPassword(id, pw).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()) {
                                     Log.d(TAG,  "회원 가입에 성공하였습니다. ");
-                                    Toast.makeText(MainActivity.this, "회원 가입에  성공하였습니다. ", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.this, "회원 가입에 성공하였습니다. ", Toast.LENGTH_SHORT).show();
 
                                     FirebaseUser user = mAuth.getCurrentUser(); // 로그인한 회원의 계정정보 가져오기
                                     //updateUI(user);
