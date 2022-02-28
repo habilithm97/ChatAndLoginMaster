@@ -57,7 +57,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         //String[] dataSet = {"테스트1", "테스트2", "테스트3", "테스트4"};
-        adapter = new RecyclerViewAdapter(items);
+        adapter = new RecyclerViewAdapter(items, id);
         recyclerView.setAdapter(adapter);
 
         edt = (EditText)findViewById(R.id.edt);
