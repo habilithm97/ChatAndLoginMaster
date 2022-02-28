@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                                     //updateUI(user);
 
                                     Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                                    intent.putExtra("id", id);
                                     startActivity(intent);
 
                                 } else {
