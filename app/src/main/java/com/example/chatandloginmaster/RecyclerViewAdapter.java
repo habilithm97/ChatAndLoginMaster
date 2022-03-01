@@ -34,7 +34,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.left_text_item, viewGroup, false);
-        if(viewType == 1) {
+        if(viewType == 1) { // 내 아이디면 말풍선을 오른쪽에 만듬
             itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.right_text_item, viewGroup, false);
         }
         RecyclerView.ViewHolder holder = new RecyclerViewAdapter.ViewHolder(itemView);

@@ -122,6 +122,8 @@ public class ChatActivity extends AppCompatActivity {
                 data.put("str", str);
 
                 myRef.setValue(data);
+                edt.getText().clear();
+                recyclerView.scrollToPosition(adapter.getItemCount() - 1); // 가장 최근 채팅에 포커스를 둠
             }
         });
     }
