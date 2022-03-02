@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth; // 파이어베이스 인증 객체
 
-    EditText idEdt, pwEdt;
+    EditText emailEdt, pwEdt;
     ProgressBar progressBar;
 
     @Override
@@ -40,18 +40,18 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance(); // 파이어베이스 인증 객체를 가져와서 변수에 할당함
 
-        idEdt = (EditText)findViewById(R.id.idEdt);
+        emailEdt = (EditText)findViewById(R.id.emailEdt);
         pwEdt = (EditText)findViewById(R.id.pwEdt);
 
         Button registerBtn = (Button)findViewById(R.id.registerBtn);
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = idEdt.getText().toString();
+                String email = emailEdt.getText().toString();
                 String pw = pwEdt.getText().toString();
 
-                if(id.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "아이디를 입력하세요. ", Toast.LENGTH_SHORT).show();
+                if(email.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "이메일을 입력하세요. ", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(pw.isEmpty()) {
@@ -59,19 +59,16 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                // 신규 회원  가입
-                mAuth.createUserWithEmailAndPassword(id, pw).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                // 신규 회원가입
+                mAuth.createUserWithEmailAndPassword(email, pw).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()) {
-                                    Log.d(TAG,  "회원 가입에 성공하였습니다. ");
-                                    Toast.makeText(MainActivity.this, "회원 가입에 성공하였습니다. ", Toast.LENGTH_SHORT).show();
-
-                                    FirebaseUser user = mAuth.getCurrentUser(); // 로그인한 회원의 계정정보 가져오기
-                                    //updateUI(user);
+                                    Log.d(TAG,  "회원가입에 성공하였습니다. ");
+                                    Toast.makeText(MainActivity.this, "회원가입에 성공하였습니다. ", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Log.w(TAG, "회원 가입에 실패하였습니다. ", task.getException());
-                                    Toast.makeText(MainActivity.this, "회원 가입에 실패하였습니다. ", Toast.LENGTH_SHORT).show();
+                                    Log.w(TAG, "회원가입에 실패하였습니다. ", task.getException());
+                                    Toast.makeText(MainActivity.this, "회원가입에 실패하였습니다. ", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -82,11 +79,11 @@ public class MainActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = idEdt.getText().toString();
+                String email = emailEdt.getText().toString();
                 String pw = pwEdt.getText().toString();
 
-                if(id.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "아이디를 입력하세요. ", Toast.LENGTH_SHORT).show();
+                if(email.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "이메일을 입력하세요. ", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(pw.isEmpty()) {
@@ -95,8 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 progressBar.setVisibility(View.VISIBLE);
 
-                mAuth.signInWithEmailAndPassword(id, pw)
-                        .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                mAuth.signInWithEmailAndPassword(email, pw).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
@@ -104,22 +100,13 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d(TAG,  "로그인에 성공하였습니다. ");
                                     Toast.makeText(MainActivity.this, "로그인에 성공하였습니다. ", Toast.LENGTH_SHORT).show();
 
-                                    FirebaseUser user = mAuth.getCurrentUser(); // 로그인한 회원의 계정 정보 가져오기
-                                    if(user != null) {
-                                        String id = user.getEmail();
-                                        String name = user.getDisplayName();
-                                        Log.d(TAG, "아이디 : " + id + ", 이름 : " + name);
-                                    }
-                                    //updateUI(user);
-
                                     Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
-                                    intent.putExtra("id", id);
+                                    intent.putExtra("email", email);
                                     startActivity(intent);
 
                                 } else {
                                     Log.w(TAG, "로그인에 실패하였습니다. ", task.getException());
                                     Toast.makeText(MainActivity.this, "로그인에 실패하였습니다. ", Toast.LENGTH_SHORT).show();
-                                    //updateUI(user);
                                 }
                             }
                         });
@@ -132,6 +119,5 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         // 앱이 시작되면 사용자가 로그인했는지 확인하고 그에 따라 UI를 업데이트함
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
     }
 }

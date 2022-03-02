@@ -36,8 +36,8 @@ public class ChatActivity extends AppCompatActivity {
 
     EditText edt;
     Button btn;
-    String id;
-
+    String email;
+    
     ArrayList<Chat> items;
 
     @Override
@@ -48,7 +48,7 @@ public class ChatActivity extends AppCompatActivity {
 
         items = new ArrayList<>();
 
-        id = getIntent().getStringExtra("id");
+        email = getIntent().getStringExtra("email"); // 로그인한 이메일을 가져옴
 
         recyclerView = (RecyclerView)findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true); // 아이템을 추가해도 리사이클러뷰의 크기가 변하지 않음
@@ -57,13 +57,13 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         //String[] dataSet = {"테스트1", "테스트2", "테스트3", "테스트4"};
-        adapter = new RecyclerViewAdapter(items, id);
+        adapter = new RecyclerViewAdapter(items, email); // 어댑터에 어레이리스트와 이메일을 담음
         recyclerView.setAdapter(adapter);
 
         edt = (EditText)findViewById(R.id.edt);
         btn = (Button)findViewById(R.id.btn);
 
-        // 메시지 아래의 자식들을(id와 str) 가져올거임
+        // 메시지 아래의 자식들을(email, str) 가져올거임
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
@@ -71,9 +71,9 @@ public class ChatActivity extends AppCompatActivity {
 
                 Chat chat = dataSnapshot.getValue(Chat.class); // 모델
                 String commentKey = dataSnapshot.getKey();
-                String id = chat.getId();
+                String email = chat.getEmail();
                 String str = chat.getStr();
-                Log.d(TAG, "아이디 : " + id);
+                Log.d(TAG, "이메일 : " + email);
                 Log.d(TAG, "채팅내용 : " + str);
 
                 items.add(chat);
@@ -118,7 +118,7 @@ public class ChatActivity extends AppCompatActivity {
                 DatabaseReference myRef = database.getReference("message").child(dateTime);
 
                 Hashtable<String, String> data = new Hashtable<String, String>();
-                data.put("id", id);
+                data.put("email", email);
                 data.put("str", str);
 
                 myRef.setValue(data);
