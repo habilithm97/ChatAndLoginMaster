@@ -22,9 +22,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tv = (TextView) view.findViewById(R.id.tv);
         }
 
-        public TextView getTextView() {
+        /*public TextView getTextView() {
             return tv;
-        }
+        } */
     }
     public RecyclerViewAdapter(ArrayList<Chat> dataSet, String email) {
         localDataSet = dataSet;
@@ -44,7 +44,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.getTextView().setText(localDataSet.get(position).getStr());
+        //viewHolder.getTextView().setText(localDataSet.get(position).getStr());
+        viewHolder.tv.setText(localDataSet.get(position).getStr()); // 어레이 리스트의 각 위치에 맞는 채팅내용을 가져와서 텍스트뷰(말풍선)로 보여줌
     }
 
     @Override
@@ -53,8 +54,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public int getItemViewType(int position) {
-        if(localDataSet.get(position).email.equals(myEmail)) { // 어레이 리스트의 아이디가 내 아이디면
+    public int getItemViewType(int position) { // 채팅을 입력한 사용자가 상대방인지 나인지 구분함 -> 이거 왜 갑자기 에러뜸??????
+        if (localDataSet.get(position).email.equals(myEmail)) {
             return 1;
         } else {
             return 2;
